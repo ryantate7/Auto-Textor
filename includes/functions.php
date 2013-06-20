@@ -91,8 +91,8 @@ function send_messages()  //sends the messages out to the respondents
 			$mail->IsSMTP();                                   	// Set mailer to use SMTP
 			$mail->Host = 'mail.nustats.com';  					// Specify server
 			$mail->SMTPAuth = true;                             // Enable SMTP authentication
-			$mail->Username = 'rwebb';                          // SMTP username
-			$mail->Password = '$layer1980';                     // SMTP password
+			$mail->Username = $user;                          // SMTP username
+			$mail->Password = $password;                     // SMTP password
 			$mail->SMTPSecure = 'tls';                          // Enable encryption, 'ssl' also accepted
 
 			$mail->From = 'rwebb@nustats.com';
@@ -153,8 +153,8 @@ function send_confirmation_email($count)  //sends the confirmation e-mail to the
 	$mail->IsSMTP();                                      	// Set mailer to use SMTP
 	$mail->Host = 'mail.nustats.com';  						// Specify server
 	$mail->SMTPAuth = true;                               	// Enable SMTP authentication
-	$mail->Username = 'rwebb';                            	// SMTP username
-	$mail->Password = '$layer1980';                         // SMTP password
+	$mail->Username = '$user';                            	// SMTP username
+	$mail->Password = '$password';                         // SMTP password
 	$mail->SMTPSecure = 'tls';                            	// Enable encryption, 'ssl' also accepted
 
 	$mail->From = 'rwebb@nustats.com';
