@@ -1,9 +1,10 @@
 <?php
-require 'includes/class.phpmailer.php';
+require ("includes/class.phpmailer.php");
+require("includes/constants.php");
 
 function confirm_query($result_set)  //confirms queries are successful
 {
-  if(!$result_set)
+	if(!$result_set)
 	{
 		die("Database query falied: " . mysql_error());
 	}	
@@ -53,7 +54,7 @@ function check_email_address($email_address)  //checks to make sure that the num
 {
 	$number = substr($email_address, 0, 10);
 	$ext = substr($email_address, -4);
-	if(is_numeric($number) && ($ext == ".com"))
+	if(is_numeric($number) && (($ext == ".com") || ($ext == ".net")) )
 	{
 		$valid_address = true;
 	}
@@ -72,7 +73,7 @@ function send_messages()  //sends the messages out to the respondents
 
 	$data_set = get_data();
 	$record_count = mysql_num_rows($data_set);
-	$subject = "Hi!";
+	//$subject = "Travel Study";
 	
 	
 	while($data = mysql_fetch_array($data_set))
@@ -80,8 +81,10 @@ function send_messages()  //sends the messages out to the respondents
 		$email_address = "{$data['phone']}";
 		$email_address .= "@";
 		$email_address .= "{$data['caddress']}";
-		$body = "Hi {$data['name']}, how are you?";
-		
+		$body = "The NCTCOG travel study has begun. If you have not yet done so, please log in to RouteScout ";
+		$body .= "and press the green button to begin recording your travel. Questions? Please contact 512-284-4921.";
+		$userName = "/'" . USERNAME . "/'";
+		$passWord = "/'" .PASSWORD. "/'";
 		$status = check_email_address($email_address);
 		if($status == true)
 		{
@@ -91,12 +94,12 @@ function send_messages()  //sends the messages out to the respondents
 			$mail->IsSMTP();                                   	// Set mailer to use SMTP
 			$mail->Host = 'mail.nustats.com';  					// Specify server
 			$mail->SMTPAuth = true;                             // Enable SMTP authentication
-			$mail->Username = $user;                          // SMTP username
-			$mail->Password = $password;                     // SMTP password
+			$mail->Username = $userName;                          // SMTP username
+			$mail->Password = $passWord;                     // SMTP password
 			$mail->SMTPSecure = 'tls';                          // Enable encryption, 'ssl' also accepted
 
 			$mail->From = 'rwebb@nustats.com';
-			$mail->FromName = 'Ryan';
+			$mail->FromName = 'NCTCOG';
 			$mail->AddAddress($to);  								// Add a recipient
 
 
@@ -136,6 +139,9 @@ function send_confirmation_email($count)  //sends the confirmation e-mail to the
 	$rf_set = get_data($sent = 9, $date = $current_date);
 	$records_failed = mysql_num_rows($rf_set); 
 	
+	$userName = "/'" . USERNAME . "/'";
+	$passWord = "/'" .PASSWORD. "/'";
+	
 	if($count > 0)
 	{
 		$body = "Messages have been sent for today!<br>";
@@ -153,8 +159,8 @@ function send_confirmation_email($count)  //sends the confirmation e-mail to the
 	$mail->IsSMTP();                                      	// Set mailer to use SMTP
 	$mail->Host = 'mail.nustats.com';  						// Specify server
 	$mail->SMTPAuth = true;                               	// Enable SMTP authentication
-	$mail->Username = '$user';                            	// SMTP username
-	$mail->Password = '$password';                         // SMTP password
+	$mail->Username = $userName;                            	// SMTP username
+	$mail->Password = $passWord;                         // SMTP password
 	$mail->SMTPSecure = 'tls';                            	// Enable encryption, 'ssl' also accepted
 
 	$mail->From = 'rwebb@nustats.com';
